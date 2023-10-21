@@ -82,7 +82,6 @@ function cadastrarDespesa() {
         setInterval(function () {
             location.reload();
         }, 1500);
-
     } else {
         //informar erro
 
