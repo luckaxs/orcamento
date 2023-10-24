@@ -1,11 +1,12 @@
 class Despesa {
-    constructor(ano, mes, dia, tipo, descricao, valor) {
+    constructor(ano, mes, dia, categoria, descricao, valor, tipo) {
         this.ano = ano;
         this.mes = mes;
         this.dia = dia;
-        this.tipo = tipo;
+        this.categoria = categoria;
         this.descricao = descricao;
         this.valor = valor;
+        this.tipo = tipo;
     }
     validarDados() {
         for (let i in this) {
@@ -69,8 +70,8 @@ class Bd {
             despesasFiltradas = despesasFiltradas.filter(d => d.dia == despesa.dia);
         }
         
-        if (despesa.tipo != '') {
-            despesasFiltradas = despesasFiltradas.filter(d => d.tipo == despesa.tipo);
+        if (despesa.categoria != '') {
+            despesasFiltradas = despesasFiltradas.filter(d => d.categoria == despesa.categoria);
         }
         
         if (despesa.descricao != '') {
@@ -79,6 +80,9 @@ class Bd {
         
         if (despesa.valor != '') {
             despesasFiltradas = despesasFiltradas.filter(d => d.valor == despesa.valor);
+        }
+        if (despesa.tipo != '') {
+            despesasFiltradas = despesasFiltradas.filter(d => d.tipo == despesa.tipo);
         }
         
 
@@ -97,17 +101,19 @@ function cadastrarDespesa() {
     let ano = document.getElementById('ano');
     let mes = document.getElementById('mes');
     let dia = document.getElementById('dia');
-    let tipo = document.getElementById('tipo');
+    let categoria = document.getElementById('categoria');
     let descricao = document.getElementById('descricao');
     let valor = document.getElementById('valor');
+    let tipo = document.getElementById('tipo');
 
     let despesa = new Despesa(
         ano.value,
         mes.value,
         dia.value,
-        tipo.value,
+        categoria.value,
         descricao.value,
-        valor.value
+        valor.value,
+        tipo.value
     );
 
     if (despesa.validarDados()) {
@@ -159,30 +165,30 @@ function carregaListaDespesa(despesas = Array()) {
 
         //criando as colunas e inserido dados
 
-        switch (d.tipo) {
+        switch (d.categoria) {
             case '1':
-                d.tipo = 'Alimentação';
+                d.categoria = 'Alimentação';
                 break;
             case '2':
-                d.tipo = 'Educação';
+                d.categoria = 'Educação';
                 break;
             case '3':
-                d.tipo = 'Lazer';
+                d.categoria = 'Lazer';
                 break;
             case '4':
-                d.tipo = 'Saúde';
+                d.categoria = 'Saúde';
                 break;
             case '5':
-                d.tipo = 'Transporte';
+                d.categoria = 'Transporte';
                 break;
             case '6':
-                d.tipo = 'Outros'
+                d.categoria = 'Outros'
                 break;
         }
 
         linha.insertCell(0).innerHTML = `${d.dia}/${d.mes}/${d.ano}`
 
-        linha.insertCell(1).innerHTML = `${d.tipo}`
+        linha.insertCell(1).innerHTML = `${d.categoria}`
 
         linha.insertCell(2).innerHTML = `${d.descricao}`
         linha.insertCell(3).innerHTML = `${d.valor}`
@@ -216,11 +222,11 @@ function pesquisarDispesas() {
     let ano = document.getElementById('ano').value;
     let mes = document.getElementById('mes').value;
     let dia = document.getElementById('dia').value;
-    let tipo = document.getElementById('tipo').value;
+    let categoria = document.getElementById('categoria').value;
     let descricao = document.getElementById('descricao').value;
     let valor = document.getElementById('valor').value;
 
-    let despesa = new Despesa(ano, mes, dia, tipo, descricao, valor);
+    let despesa = new Despesa(ano, mes, dia, categoria, descricao, valor);
 
     let despesas = bd.pesquisarRegistro(despesa);
 
